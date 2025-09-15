@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 3, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
+    {"offset": {"line": 11, "column": 0}, "map": {"version":3,"sources":["file:///Users/andrewmcclelland/Documents/spotify-track-explorer/ste-client/src/app/page.tsx"],"sourcesContent":["export default function Home() {\n\treturn (\n\t\t<div className='font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20'>\n\t\t\t<main className='flex flex-col gap-[32px] row-start-2 items-center sm:items-start'>\n\t\t\t\t<p className='font-sans ... text-4xl font-bold'>Spotify Track Explorer</p>\n\t\t\t\t<p className='font-mono ... text-2xl'>\n\t\t\t\t\tThe easy way to organise your tracks\n\t\t\t\t</p>\n\t\t\t</main>\n\t\t\t<footer className='row-start-3 flex gap-[24px] flex-wrap items-center justify-center'></footer>\n\t\t</div>\n\t);\n}\n"],"names":[],"mappings":";;;;;;AAAe,SAAS;IACvB,qBACC,6WAAC;QAAI,WAAU;;0BACd,6WAAC;gBAAK,WAAU;;kCACf,6WAAC;wBAAE,WAAU;kCAAmC;;;;;;kCAChD,6WAAC;wBAAE,WAAU;kCAAyB;;;;;;;;;;;;0BAIvC,6WAAC;gBAAO,WAAU;;;;;;;;;;;;AAGrB","debugId":null}}]
+}

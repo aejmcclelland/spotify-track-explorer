@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@plugin "daisyui" {
+	themes: cupcake --default;
+}
+@theme inline {
+	--font-sans: var(--font-inter);
+	--font-mono: var(--font-nunito);
+}
+
