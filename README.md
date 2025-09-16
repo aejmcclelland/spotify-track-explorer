@@ -60,5 +60,5 @@ npm run dev
 ---
 
 ## CI Status
-![Backend CI](https://github.com/aejmcclelland/spotify-track-explorer/actions/workflows/backend.yml/badge.svg)
-![Frontend CI](https://github.com/aejmcclelland/spotify-track-explorer/actions/workflows/frontend.yml/badge.svg)
+![Backend CI](https://github.com/aejmcclelland/spotify-track-explorer/actions/workflows/backend.yml)
+![Frontend CI](https://github.com/aejmcclelland/spotify-track-explorer/actions/workflows/frontend.yml)
