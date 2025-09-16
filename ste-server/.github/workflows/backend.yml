@@ -1,0 +1,32 @@
+name: backend-ci
+
+on:
+  push:
+    paths:
+      - "ste-server/**"
+      - ".github/workflows/backend.yml"
+  pull_request:
+    paths:
+      - "ste-server/**"
+      - ".github/workflows/backend.yml"
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+          cache: "maven"
+
+      - name: Build & Test
+        working-directory: ste-server
+        run: mvn -B -DskipTests=false test
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true

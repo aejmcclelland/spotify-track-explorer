@@ -59,9 +59,6 @@ npm run dev
 
 ---
 
-## Learning Outcomes
-
-- Clean OOP and layered architecture with Spring Boot  
-- Full-stack development with Next.js and Java  
-- Cloud deployment and AWS cost-aware design  
-- Professional repository practices including CI, linting, and documentation
+## CI Status
+![Backend CI](https://github.com/aejmcclelland/spotify-track-explorer/actions/workflows/backend.yml/badge.svg)
+![Frontend CI](https://github.com/aejmcclelland/spotify-track-explorer/actions/workflows/frontend.yml/badge.svg)

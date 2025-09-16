@@ -1,0 +1,43 @@
+name: frontend-ci
+
+on:
+  push:
+    paths:
+      - "ste-client/**"
+      - ".github/workflows/frontend.yml"
+  pull_request:
+    paths:
+      - "ste-client/**"
+      - ".github/workflows/frontend.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "pnpm"
+          cache-dependency-path: ste-client/pnpm-lock.yaml
+
+      - name: Install deps
+        working-directory: ste-client
+        run: pnpm install --frozen-lockfile=false
+
+      - name: Lint & Build
+        working-directory: ste-client
+        run: |
+          pnpm lint || true   # keep optional for now
+          pnpm build
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
