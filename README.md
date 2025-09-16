@@ -6,7 +6,7 @@ Built to showcase clean OOP design, API integration, and AWS deployment skills.
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 - spotify-track-explorer/
 - ste-client/   # Next.js frontend
@@ -16,7 +16,7 @@ Built to showcase clean OOP design, API integration, and AWS deployment skills.
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Backend (Spring Boot)
 ```bash
@@ -33,3 +33,35 @@ npm install
 npm run dev
 # visit http://localhost:3000
 ```
+
+---
+
+##  Tech Stack
+
+- **Backend:** Spring Boot 3, Java 17+
+- **Frontend:** Next.js 15, TypeScript, Tailwind CSS, daisyUI
+- **Infrastructure:** AWS (planned)
+
+---
+
+##  Roadmap
+
+- [x] Foundations
+- [x] Backend skeleton
+- [x] App authentication
+- [x] Spotify account linking
+- [x] Fetch playlists/tracks
+- [x] Frontend MVP
+- [ ] API docs/metrics
+- [ ] AWS deployment
+- [ ] Observability
+- [ ] Nice-to-have features
+
+---
+
+## Learning Outcomes
+
+- Clean OOP and layered architecture with Spring Boot  
+- Full-stack development with Next.js and Java  
+- Cloud deployment and AWS cost-aware design  
+- Professional repository practices including CI, linting, and documentation
