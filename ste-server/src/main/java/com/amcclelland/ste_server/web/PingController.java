@@ -17,4 +17,9 @@ public class PingController {
     public ResponseEntity<String> ping() {
         return ResponseEntity.ok(pingService.ping().value());
     }
+
+    @GetMapping("/api/secure/hello")
+    public ResponseEntity<String> secureHello() {
+        return ResponseEntity.ok("hello, secure world");
+    }
 }

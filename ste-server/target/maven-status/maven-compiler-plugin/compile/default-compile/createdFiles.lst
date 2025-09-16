@@ -1,4 +1,4 @@
-com/amcclelland/ste_server/SteServerApplication.class
-com/amcclelland/ste_server/web/PingController.class
 com/amcclelland/ste_server/application/DefaultPingService.class
 com/amcclelland/ste_server/application/PingService.class
+com/amcclelland/ste_server/SteServerApplication.class
+com/amcclelland/ste_server/web/PingController.class

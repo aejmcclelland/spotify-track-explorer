@@ -1,4 +1,11 @@
 /Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/SteServerApplication.java
 /Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/application/DefaultPingService.java
 /Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/application/PingService.java
+/Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/config/AuthManagerConfig.java
+/Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/config/InMemoryUserConfig.java
+/Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/config/JwtKeysConfig.java
+/Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/config/SecurityConfig.java
+/Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/domain/Message.java
+/Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/web/AuthController.java
 /Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/web/PingController.java
+/Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/web/dto/LoginRequest.java
