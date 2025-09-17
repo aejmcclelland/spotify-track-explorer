@@ -2,26 +2,61 @@ package com.amcclelland.ste_server.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 
+@EnableMethodSecurity
 @Configuration
 public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers(
+                                org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console())
+                        .disable())
+                .headers(h -> h.frameOptions(f -> f.sameOrigin()))
+                .cors(cors -> {
+                })
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/ping", "/api/auth/token", "/api/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        // allow H2 console
+                        .requestMatchers(
+                                org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console())
+                        .permitAll()
+                        // ✅ allow ALL auth endpoints (register, token, future ones)
+                        .requestMatchers("/api/auth/**").permitAll()
+                        // your public health endpoint
+                        .requestMatchers("/api/ping").permitAll()
+                        // admin and everything else
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
-                .oauth2ResourceServer(oauth -> oauth.jwt(jwt -> jwt
-                        .jwtAuthenticationConverter(jwtAuthenticationConverter())));
+                .oauth2ResourceServer(oauth -> oauth
+                        .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
         return http.build();
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        var config = new CorsConfiguration();
+        config.setAllowedOrigins(java.util.List.of("http://localhost:3000"));
+        config.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(java.util.List.of("*"));
+        config.setExposedHeaders(java.util.List.of("Authorization"));
+        config.setAllowCredentials(true); // fine for dev; revisit if using cookies later
+
+        var source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        return source;
     }
 
     @Bean
@@ -37,8 +72,8 @@ public class SecurityConfig {
             if (roles == null)
                 return java.util.List.of();
             return roles.stream()
-                        .map(role -> new org.springframework.security.core.authority.SimpleGrantedAuthority(role))
-                        .collect(java.util.stream.Collectors.toList());
+                    .map(role -> new org.springframework.security.core.authority.SimpleGrantedAuthority(role))
+                    .collect(java.util.stream.Collectors.toList());
         });
         return converter;
     }
