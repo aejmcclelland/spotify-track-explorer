@@ -5,14 +5,18 @@ on:
     paths:
       - "ste-server/**"
       - ".github/workflows/backend.yml"
+    branches: [ "main" ]
   pull_request:
     paths:
       - "ste-server/**"
       - ".github/workflows/backend.yml"
+    branches: [ "main" ]
 
 jobs:
   build-test:
     runs-on: ubuntu-latest
+    env:
+      SPRING_PROFILES_ACTIVE: test
     steps:
       - uses: actions/checkout@v4
 
@@ -25,7 +29,7 @@ jobs:
 
       - name: Build & Test
         working-directory: ste-server
-        run: mvn -B -DskipTests=false test
+        run: mvn -B -Dspring.profiles.active=test -DskipTests=false test
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
