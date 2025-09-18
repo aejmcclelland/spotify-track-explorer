@@ -29,7 +29,7 @@ public class SecurityConfig {
                 })
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        // ✅ allow ALL auth endpoints (register, token, future ones)
+
                         .requestMatchers("/api/auth/**").permitAll()
                         // your public health endpoint
                         .requestMatchers("/api/ping").permitAll()
