@@ -10,16 +10,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 255)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "password_hash", nullable = false, length = 100)
     private String passwordHash;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String role = "ROLE_USER";
 
-    @Column(nullable = false)
+    @Column(name = "created_at", nullable = false)
     private Instant createdAt = Instant.now();
 
     protected User() {
@@ -38,11 +38,27 @@ public class User {
         return email;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getPasswordHash() {
         return passwordHash;
     }
 
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
     public String getRole() {
         return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
     }
 }

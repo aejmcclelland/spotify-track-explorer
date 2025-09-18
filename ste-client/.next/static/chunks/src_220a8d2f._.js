@@ -111,7 +111,8 @@ function LoginPage() {
             (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$auth$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["setToken"])(data.access_token);
             router.replace("/"); // land on Home after login
         } catch (err) {
-            setMsg((err === null || err === void 0 ? void 0 : err.message) || "Login failed");
+            const msg = String(err.message || "");
+            setMsg(msg.includes("Invalid email or password") ? "Invalid email or password" : msg || "Login failed");
         } finally{
             setLoading(false);
         }
@@ -124,7 +125,7 @@ function LoginPage() {
                 children: "Sign in"
             }, void 0, false, {
                 fileName: "[project]/src/app/login/page.tsx",
-                lineNumber: 40,
+                lineNumber: 45,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$3_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("form", {
@@ -140,7 +141,7 @@ function LoginPage() {
                         required: true
                     }, void 0, false, {
                         fileName: "[project]/src/app/login/page.tsx",
-                        lineNumber: 42,
+                        lineNumber: 47,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$3_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
@@ -152,7 +153,7 @@ function LoginPage() {
                         required: true
                     }, void 0, false, {
                         fileName: "[project]/src/app/login/page.tsx",
-                        lineNumber: 50,
+                        lineNumber: 55,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$3_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -161,13 +162,13 @@ function LoginPage() {
                         children: "Sign in"
                     }, void 0, false, {
                         fileName: "[project]/src/app/login/page.tsx",
-                        lineNumber: 58,
+                        lineNumber: 63,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/app/login/page.tsx",
-                lineNumber: 41,
+                lineNumber: 46,
                 columnNumber: 7
             }, this),
             msg && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$15$2e$5$2e$3_react$2d$dom$40$19$2e$1$2e$0_react$40$19$2e$1$2e$0_$5f$react$40$19$2e$1$2e$0$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -175,13 +176,13 @@ function LoginPage() {
                 children: msg
             }, void 0, false, {
                 fileName: "[project]/src/app/login/page.tsx",
-                lineNumber: 65,
+                lineNumber: 70,
                 columnNumber: 15
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/app/login/page.tsx",
-        lineNumber: 39,
+        lineNumber: 44,
         columnNumber: 5
     }, this);
 }

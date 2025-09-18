@@ -1,2 +1,3 @@
 com/amcclelland/ste_server/web/PingControllerTest.class
 com/amcclelland/ste_server/SteServerApplicationTests.class
+com/amcclelland/ste_server/application/DefaultUserServiceTest.class

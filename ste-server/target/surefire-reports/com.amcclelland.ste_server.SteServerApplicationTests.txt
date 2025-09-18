@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.amcclelland.ste_server.SteServerApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.867 s -- in com.amcclelland.ste_server.SteServerApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.58 s -- in com.amcclelland.ste_server.SteServerApplicationTests

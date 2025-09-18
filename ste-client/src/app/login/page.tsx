@@ -29,7 +29,12 @@ export default function LoginPage() {
       setToken(data.access_token);
       router.replace("/"); // land on Home after login
     } catch (err: any) {
-      setMsg(err?.message || "Login failed");
+      const msg = String(err.message || "");
+      setMsg(
+        msg.includes("Invalid email or password")
+          ? "Invalid email or password"
+          : msg || "Login failed"
+      );
     } finally {
       setLoading(false);
     }

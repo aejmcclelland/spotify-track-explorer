@@ -1902,10 +1902,6 @@
     gap: calc(var(--spacing) * 2);
   }
 
-  .gap-4 {
-    gap: calc(var(--spacing) * 4);
-  }
-
   .gap-16 {
     gap: calc(var(--spacing) * 16);
   }

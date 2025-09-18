@@ -1,22 +1,21 @@
 package com.amcclelland.ste_server.web;
 
 import com.amcclelland.ste_server.application.PingService;
+import com.amcclelland.ste_server.domain.Message;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.mockito.Mockito;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.mockito.Mockito;
+
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import com.amcclelland.ste_server.domain.Message;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(PingController.class)
 class PingControllerTest {
 
     private MockMvc mvc;
-
     private PingService pingService;
 
     @BeforeEach

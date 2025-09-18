@@ -29,10 +29,6 @@ public class SecurityConfig {
                 })
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        // allow H2 console
-                        .requestMatchers(
-                                org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console())
-                        .permitAll()
                         // ✅ allow ALL auth endpoints (register, token, future ones)
                         .requestMatchers("/api/auth/**").permitAll()
                         // your public health endpoint
