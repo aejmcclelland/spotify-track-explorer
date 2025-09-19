@@ -36,4 +36,12 @@ public class ApiErrorHandler {
         log.error("500 Internal Server Error", ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "internal_error"));
     }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<Map<String, String>> handleIllegalState(IllegalStateException ex) {
+        if ("not_linked".equals(ex.getMessage())) {
+            return ResponseEntity.badRequest().body(Map.of("error", "not_linked"));
+        }
+        return ResponseEntity.status(500).body(Map.of("error", "internal_error"));
+    }
 }

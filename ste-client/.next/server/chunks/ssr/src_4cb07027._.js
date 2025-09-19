@@ -3,6 +3,8 @@ module.exports = [
 "use strict";
 
 __turbopack_context__.s([
+    "delJson",
+    ()=>delJson,
     "getJson",
     ()=>getJson,
     "postJson",
@@ -54,6 +56,24 @@ async function getJson(path) {
         throw new Error(text || `HTTP ${res.status}`);
     }
     return res.json();
+}
+async function delJson(path) {
+    const token = getToken();
+    const headers = {};
+    if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+    }
+    console.debug("API delete", path, {
+        hasAuth: !!headers["Authorization"]
+    });
+    const res = await fetch(`${API_BASE}${path}`, {
+        method: "DELETE",
+        headers
+    });
+    if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || `HTTP ${res.status}`);
+    }
 }
 }),
 "[project]/src/app/register/page.tsx [app-ssr] (ecmascript)", ((__turbopack_context__) => {

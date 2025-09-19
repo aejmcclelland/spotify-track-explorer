@@ -21,6 +21,7 @@ public class SpotifyService {
         this.users = users;
         this.accounts = accounts;
         this.spotifyClient = spotifyClient;
+
     }
 
     /**
@@ -31,7 +32,7 @@ public class SpotifyService {
         var user = users.findByEmail(email).orElseThrow(() -> new RuntimeException("user not found"));
         var acct = accounts.findByUserId(user.getId()).orElseThrow(() -> new RuntimeException("not linked"));
 
-        // Always refresh (simple + reliable for now)
+        // Always refresh
         return refreshAndPersist(acct);
     }
 
@@ -46,9 +47,9 @@ public class SpotifyService {
     }
 
     public String getValidAccessTokenForUser(Long userId) {
-        var acct = accounts.findByUserId(userId)
-                .orElseThrow(() -> new RuntimeException("Spotify not linked"));
-        // Always refresh for now; we are not tracking expiry on the entity yet
+
+        var acct = accounts.findByUserId(userId).orElseThrow(() -> new IllegalStateException("not_linked"));
+        // Always refresh for now;
         return refreshAndPersist(acct);
     }
 }
