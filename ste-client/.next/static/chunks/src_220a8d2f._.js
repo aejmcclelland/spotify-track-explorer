@@ -3,6 +3,8 @@
 "use strict";
 
 __turbopack_context__.s([
+    "delJson",
+    ()=>delJson,
     "getJson",
     ()=>getJson,
     "postJson",
@@ -57,6 +59,24 @@ async function getJson(path) {
         throw new Error(text || "HTTP ".concat(res.status));
     }
     return res.json();
+}
+async function delJson(path) {
+    const token = getToken();
+    const headers = {};
+    if (token) {
+        headers["Authorization"] = "Bearer ".concat(token);
+    }
+    console.debug("API delete", path, {
+        hasAuth: !!headers["Authorization"]
+    });
+    const res = await fetch("".concat(API_BASE).concat(path), {
+        method: "DELETE",
+        headers
+    });
+    if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || "HTTP ".concat(res.status));
+    }
 }
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);

@@ -1,84 +1,110 @@
 "use client";
+
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { getJson } from "@/lib/api";
 import Link from "next/link";
+import { getJson, delJson } from "@/lib/api"; // you already have getJson; add a small delJson if needed
 
 type Me = { username: string; roles: string[] };
+type SpotifyProfile = { display_name?: string };
 
 export default function MePage() {
-  const router = useRouter();
   const [me, setMe] = useState<Me | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [linking, setLinking] = useState(false);
+  const [spProfile, setSpProfile] = useState<SpotifyProfile | null>(null);
+  const [disconnecting, setDisconnecting] = useState(false);
 
   useEffect(() => {
-    const token =
-      typeof window !== "undefined"
-        ? localStorage.getItem("access_token")
-        : null;
-    if (!token) {
-      router.replace("/login");
-      return;
-    }
+    (async () => {
+      try {
+        const user = await getJson<Me>("/api/me");
+        setMe(user);
+      } catch (e: any) {
+        setErr("Not signed in");
+      }
+    })();
+  }, []);
 
-    let mounted = true;
-    getJson<Me>("/api/me")
-      .then((data) => {
-        if (mounted) setMe(data);
-      })
-      .catch((e: Error) => {
-        if (!mounted) return;
-        const msg = e.message || "Failed to load";
-        if (msg.startsWith("401")) {
-          localStorage.removeItem("access_token");
-          setErr("Not signed in");
-          router.replace("/login");
-        } else {
-          setErr(msg);
-        }
-      });
-    return () => {
-      mounted = false;
-    };
-  }, [router]);
+  // check spotify link status after we know user is signed in
+  useEffect(() => {
+    if (!me) return;
+    (async () => {
+      try {
+        const prof = await getJson<SpotifyProfile>("/api/spotify/profile");
+        setSpProfile(prof);
+      } catch {
+        setSpProfile(null); // not linked or 401 from Spotify
+      }
+    })();
+  }, [me]);
 
-  if (err) return <div className="alert">{err}</div>;
-  if (!me) return <div className="loading loading-spinner loading-md" />;
-
-  async function connectSpotify() {
+  const connectSpotify = async () => {
+    setLinking(true);
     try {
-      setLinking(true);
-      const { authorize_url } = await getJson<{ authorize_url: string }>(
+      const data = await getJson<{ authorize_url: string; state: string }>(
         "/api/spotify/authorize"
       );
-      window.location.href = authorize_url;
+      window.location.href = data.authorize_url;
     } catch (e: any) {
+      setErr(e?.message ?? "Failed to start Spotify auth");
+    } finally {
       setLinking(false);
-      alert(e?.message ?? "Failed to start Spotify link");
     }
-  }
+  };
+
+  const disconnectSpotify = async () => {
+    setDisconnecting(true);
+    try {
+      await delJson("/api/spotify/link");
+      setSpProfile(null);
+    } catch (e: any) {
+      setErr(e?.message ?? "Failed to disconnect");
+    } finally {
+      setDisconnecting(false);
+    }
+  };
+
+  if (err) return <div className="alert alert-error">{err}</div>;
+  if (!me) return <div className="loading loading-spinner" />;
 
   return (
-    <div className="prose">
-      <h1>Account</h1>
-      <p>
-        <b>User:</b> {me.username}
-      </p>
-      <p>
-        <b>Roles:</b> {me.roles && me.roles.length ? me.roles.join(", ") : "—"}
-      </p>
-      <button
-        className="btn btn-outline"
-        onClick={connectSpotify}
-        disabled={linking}
-      >
-        {linking ? "Connecting…" : "Connect Spotify"}
-      </button>
-      <div className="mt-3">
-        <Link className="btn" href="/spotify">
-          View Spotify Playlists
-        </Link>
+    <div className="p-4 space-y-4">
+      <h1 className="text-2xl font-bold">Account</h1>
+      <div>
+        Username: <b>{me.username}</b>
+      </div>
+      <div>
+        Roles: <b>{me.roles.join(", ")}</b>
+      </div>
+
+      <div className="divider" />
+
+      <div className="flex items-center gap-3">
+        {spProfile ? (
+          <>
+            <span className="badge badge-success">
+              Linked as {spProfile.display_name ?? "Spotify user"}
+            </span>
+            <button
+              className="btn btn-outline btn-sm"
+              onClick={disconnectSpotify}
+              disabled={disconnecting}
+            >
+              {disconnecting ? "Disconnecting…" : "Disconnect Spotify"}
+            </button>
+            <Link className="btn btn-sm" href="/spotify">
+              View Spotify playlists
+            </Link>
+          </>
+        ) : (
+          <button
+            className="btn btn-outline"
+            onClick={connectSpotify}
+            disabled={linking}
+          >
+            {linking ? "Connecting…" : "Connect Spotify"}
+          </button>
+        )}
       </div>
     </div>
   );

@@ -189,6 +189,7 @@
 
 @layer theme {
   :root, :host {
+    --color-black: #000;
     --spacing: .25rem;
     --container-md: 28rem;
     --text-sm: .875rem;
@@ -2007,6 +2008,53 @@
     }
   }
 
+  .divider {
+    white-space: nowrap;
+    height: 1rem;
+    margin: var(--divider-m, 1rem 0);
+    --divider-color: var(--color-base-content);
+    flex-direction: row;
+    align-self: stretch;
+    align-items: center;
+    display: flex;
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .divider {
+      --divider-color: color-mix(in oklab, var(--color-base-content) 10%, transparent);
+    }
+  }
+
+  .divider:before {
+    content: "";
+    background-color: var(--divider-color);
+    flex-grow: 1;
+    width: 100%;
+    height: .125rem;
+  }
+
+  .divider:after {
+    content: "";
+    background-color: var(--divider-color);
+    flex-grow: 1;
+    width: 100%;
+    height: .125rem;
+  }
+
+  @media print {
+    .divider:before {
+      border: .5px solid;
+    }
+
+    .divider:after {
+      border: .5px solid;
+    }
+  }
+
+  .divider:not(:empty) {
+    gap: 1rem;
+  }
+
   .mx-auto {
     margin-left: auto;
     margin-right: auto;
@@ -2026,6 +2074,73 @@
 
   .mb-4 {
     margin-bottom: calc(var(--spacing) * 4);
+  }
+
+  .status {
+    aspect-ratio: 1;
+    border-radius: var(--radius-selector);
+    background-color: var(--color-base-content);
+    width: .5rem;
+    height: .5rem;
+    display: inline-block;
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .status {
+      background-color: color-mix(in oklab, var(--color-base-content) 20%, transparent);
+    }
+  }
+
+  .status {
+    vertical-align: middle;
+    color: rgba(0, 0, 0, .3);
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .status {
+      color: rgba(0, 0, 0, .3);
+    }
+
+    @supports (color: color-mix(in lab, red, red)) {
+      .status {
+        color: color-mix(in oklab, var(--color-black) 30%, transparent);
+      }
+    }
+  }
+
+  .status {
+    background-image: radial-gradient(circle at 35% 30%, oklch(1 0 0 / calc(var(--depth) * .5)), rgba(0, 0, 0, 0));
+    box-shadow: 0 2px 3px -1px;
+  }
+
+  @supports (color: color-mix(in lab, red, red)) {
+    .status {
+      box-shadow: 0 2px 3px -1px color-mix(in oklab, currentColor calc(var(--depth) * 100%), rgba(0, 0, 0, 0));
+    }
+  }
+
+  .badge {
+    border-radius: var(--radius-selector);
+    vertical-align: middle;
+    color: var(--badge-fg);
+    border: var(--border) solid var(--badge-color, var(--color-base-200));
+    width: -moz-fit-content;
+    width: fit-content;
+    padding-inline: calc(.25rem * 3 - var(--border));
+    background-size: auto, calc(var(--noise) * 100%);
+    background-image: none, var(--fx-noise);
+    background-color: var(--badge-bg);
+    --badge-bg: var(--badge-color, var(--color-base-100));
+    --badge-fg: var(--color-base-content);
+    --size: calc(var(--size-selector, .25rem) * 6);
+    height: var(--size);
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    font-size: .875rem;
+    display: inline-flex;
   }
 
   .navbar {
@@ -2331,6 +2446,10 @@
     gap: calc(var(--spacing) * 2);
   }
 
+  .gap-3 {
+    gap: calc(var(--spacing) * 3);
+  }
+
   .gap-4 {
     gap: calc(var(--spacing) * 4);
   }
@@ -2585,6 +2704,11 @@
     --fontsize: .75rem;
     --btn-p: .75rem;
     --size: calc(var(--size-field, .25rem) * 8);
+  }
+
+  .badge-success {
+    --badge-color: var(--color-success);
+    --badge-fg: var(--color-success-content);
   }
 
   .btn-primary {

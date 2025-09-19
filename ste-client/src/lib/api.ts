@@ -7,7 +7,9 @@ function getToken(): string | null {
 
 export async function postJson<T>(path: string, body: unknown): Promise<T> {
   const token = getToken();
-  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+  };
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
   }
@@ -40,4 +42,25 @@ export async function getJson<T>(path: string): Promise<T> {
     throw new Error(text || `HTTP ${res.status}`);
   }
   return res.json();
+}
+
+// DELETE /api/spotify/profile
+export async function delJson(path: string): Promise<void> {
+  const token = getToken();
+  const headers: Record<string, string> = {};
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+
+  console.debug("API delete", path, { hasAuth: !!headers["Authorization"] });
+
+  const res = await fetch(`${API_BASE}${path}`, {
+    method: "DELETE",
+    headers,
+  });
+
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(text || `HTTP ${res.status}`);
+  }
 }
