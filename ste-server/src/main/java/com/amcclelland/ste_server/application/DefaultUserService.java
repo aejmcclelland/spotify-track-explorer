@@ -10,6 +10,8 @@ public class DefaultUserService implements UserService {
     private final UserRepository repo;
     private final PasswordEncoder encoder;
 
+    
+
     public DefaultUserService(UserRepository repo, PasswordEncoder encoder) {
         this.repo = repo;
         this.encoder = encoder;

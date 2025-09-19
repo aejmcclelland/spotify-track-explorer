@@ -1,5 +1,6 @@
 /Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/SteServerApplication.java
 /Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/application/DefaultUserService.java
+/Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/application/SpotifyService.java
 /Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/application/UserService.java
 /Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/config/AuthManagerConfig.java
 /Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/config/JwtKeysConfig.java
