@@ -16,5 +16,6 @@
 /Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/web/AuthController.java
 /Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/web/MeController.java
 /Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/web/SpotifyOAuthController.java
+/Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/web/SpotifyProfileController.java
 /Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/web/dto/LoginRequest.java
 /Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/web/dto/RegisterRequest.java
