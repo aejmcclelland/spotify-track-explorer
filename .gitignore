@@ -72,3 +72,6 @@ plan/
 # ── Docker (optional) ─────────────────────────────────────────────────────────
 docker-data/
 *.pid
+
+# -- hide spotify secrets yaml
+ste-server/src/main/resources/application-secrets.yaml

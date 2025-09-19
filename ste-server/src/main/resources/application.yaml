@@ -13,6 +13,14 @@ spring:
     enabled: true
     locations: classpath:db/migration
     baseline-on-migrate: true
+  config:
+    import: optional:application-secrets.yaml
+
+spotify:
+  client-id: ${SPOTIFY_CLIENT_ID}
+  client-secret: ${SPOTIFY_CLIENT_SECRET}
+  redirect-uri: ${SPOTIFY_REDIRECT_URI:http://127.0.0.1:3000/spotify/callback}
+  scopes: user-read-email playlist-read-private
+
 server:
   port: 8080
-

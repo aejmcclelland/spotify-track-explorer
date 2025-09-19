@@ -2020,6 +2020,29 @@
     max-width: var(--container-md);
   }
 
+  .link {
+    cursor: pointer;
+    -webkit-text-decoration-line: underline;
+    text-decoration-line: underline;
+  }
+
+  .link:focus {
+    --tw-outline-style: none;
+    outline-style: none;
+  }
+
+  @media (forced-colors: active) {
+    .link:focus {
+      outline-offset: 2px;
+      outline: 2px solid rgba(0, 0, 0, 0);
+    }
+  }
+
+  .link:focus-visible {
+    outline-offset: 2px;
+    outline: 2px solid;
+  }
+
   .grid-rows-\[20px_1fr_20px\] {
     grid-template-rows: 20px 1fr 20px;
   }
@@ -2077,6 +2100,10 @@
 
   .p-2 {
     padding: calc(var(--spacing) * 2);
+  }
+
+  .p-6 {
+    padding: calc(var(--spacing) * 6);
   }
 
   .p-8 {
