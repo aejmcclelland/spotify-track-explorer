@@ -10,6 +10,7 @@ export default function LoginPage() {
   const { authed } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
   const [msg, setMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -17,7 +18,7 @@ export default function LoginPage() {
     if (authed) router.replace("/");
   }, [authed, router]);
 
-  async function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     setMsg(null);
@@ -29,7 +30,7 @@ export default function LoginPage() {
       setToken(data.access_token);
       router.replace("/"); // land on Home after login
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "Sign in failed";
+      const msg = err instanceof Error ? err.message : "Login failed";
       setMsg(
         msg.includes("Invalid email or password")
           ? "Invalid email or password"
@@ -49,7 +50,9 @@ export default function LoginPage() {
           placeholder="email"
           type="email"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setEmail(e.target.value)
+          }
           required
         />
         <input
@@ -57,7 +60,9 @@ export default function LoginPage() {
           placeholder="password"
           type="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setPassword(e.target.value)
+          }
           required
         />
         <button

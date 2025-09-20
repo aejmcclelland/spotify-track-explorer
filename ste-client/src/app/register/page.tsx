@@ -16,7 +16,7 @@ export default function RegisterPage() {
     if (authed) router.replace("/");
   }, [authed, router]);
 
-  async function onSubmit(e: React.FormEvent) {
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
     setMsg(null);
@@ -48,7 +48,7 @@ export default function RegisterPage() {
           placeholder="email"
           type="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
           required
         />
         <input
@@ -56,7 +56,7 @@ export default function RegisterPage() {
           placeholder="password"
           type="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
           required
         />
         <button
