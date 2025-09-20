@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Nunito, Inter } from "next/font/google";
+import { Toaster } from "react-hot-toast";
+import Footer from "@/components/Footer";
 import "@/app/globals.css";
 
 import Navbar from "@/components/Navbar";
@@ -29,9 +31,10 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${nunito.variable} font-sans subpixel-antialiased`}
       >
-
         <Navbar />
         <main>{children}</main>
+        <Footer />
+        <Toaster position="top-center" reverseOrder={false} />
       </body>
     </html>
   );
