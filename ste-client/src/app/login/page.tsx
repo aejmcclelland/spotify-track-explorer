@@ -10,7 +10,6 @@ export default function LoginPage() {
   const { authed } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
   const [msg, setMsg] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -51,7 +50,7 @@ export default function LoginPage() {
           type="email"
           value={username}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setEmail(e.target.value)
+            setUsername(e.target.value)
           }
           required
         />

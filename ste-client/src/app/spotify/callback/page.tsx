@@ -1,14 +1,23 @@
 "use client";
-
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { postJson } from "@/lib/api"; // uses your token-attaching fetch
+import { postJson } from "@/lib/api";
+import { SpotifyExchangeResponse } from "@/types/spotify";
 
+// Wrapper ensures useSearchParams is inside a Suspense boundary (Next.js requirement)
 export default function SpotifyCallbackPage() {
+  return (
+    <Suspense fallback={<div className="p-6">Finishing Spotify link…</div>}>
+      <CallbackClient />
+    </Suspense>
+  );
+}
+
+function CallbackClient() {
   const sp = useSearchParams();
   const router = useRouter();
   const [msg, setMsg] = useState("Finishing Spotify link…");
-  const [err, setErr] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const code = sp.get("code");
@@ -21,20 +30,29 @@ export default function SpotifyCallbackPage() {
 
     (async () => {
       try {
-        const res = await postJson("/api/spotify/exchange", { code, state });
-        if ((res as any).linked) {
+        const res = await postJson<SpotifyExchangeResponse>("/api/spotify/exchange", { code, state });
+        if (res.linked) {
           setMsg("Spotify linked! Redirecting…");
           router.replace("/me");
         } else {
           setMsg("Unexpected response linking Spotify.");
         }
       } catch (err: unknown) {
-        const msg =
-          err instanceof Error ? err.message : "Failed to link Spotify";
-        setErr(msg);
+        const message = err instanceof Error ? err.message : "Failed to link Spotify";
+        setError(message);
       }
     })();
   }, [sp, router]);
 
-  return <div className="p-6">{msg}</div>;
+  return (
+    <div className="p-6">
+      {error ? (
+        <div role="alert" className="alert alert-error">
+          <span>{error}</span>
+        </div>
+      ) : (
+        <span>{msg}</span>
+      )}
+    </div>
+  );
 }
