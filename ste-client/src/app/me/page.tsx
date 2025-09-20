@@ -19,8 +19,9 @@ export default function MePage() {
       try {
         const user = await getJson<Me>("/api/me");
         setMe(user);
-      } catch (e: any) {
-        setErr("Not signed in");
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : "Not signed in";
+        setErr(msg);
       }
     })();
   }, []);
@@ -45,8 +46,10 @@ export default function MePage() {
         "/api/spotify/authorize"
       );
       window.location.href = data.authorize_url;
-    } catch (e: any) {
-      setErr(e?.message ?? "Failed to start Spotify auth");
+    } catch (err: unknown) {
+      const msg =
+        err instanceof Error ? err.message : "Failed to start Spotify Auth";
+      setErr(msg);
     } finally {
       setLinking(false);
     }
@@ -57,8 +60,10 @@ export default function MePage() {
     try {
       await delJson("/api/spotify/link");
       setSpProfile(null);
-    } catch (e: any) {
-      setErr(e?.message ?? "Failed to disconnect");
+    } catch (err: unknown) {
+      const msg =
+        err instanceof Error ? err.message : "Failed to disconnect";
+      setErr(msg);
     } finally {
       setDisconnecting(false);
     }

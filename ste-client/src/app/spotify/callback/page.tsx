@@ -8,6 +8,7 @@ export default function SpotifyCallbackPage() {
   const sp = useSearchParams();
   const router = useRouter();
   const [msg, setMsg] = useState("Finishing Spotify link…");
+  const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
     const code = sp.get("code");
@@ -27,8 +28,10 @@ export default function SpotifyCallbackPage() {
         } else {
           setMsg("Unexpected response linking Spotify.");
         }
-      } catch (e: any) {
-        setMsg(e?.message ?? "Failed to link Spotify.");
+      } catch (err: unknown) {
+        const msg =
+          err instanceof Error ? err.message : "Failed to link Spotify";
+        setErr(msg);
       }
     })();
   }, [sp, router]);

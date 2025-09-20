@@ -27,8 +27,8 @@ export default function RegisterPage() {
       );
       router.replace("/login");
       setMsg(`Registered ${data.email}`);
-    } catch (err: any) {
-      const msg = String(err.message || "");
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Registration failed";
       setMsg(
         msg.includes("409")
           ? "Email already registered"

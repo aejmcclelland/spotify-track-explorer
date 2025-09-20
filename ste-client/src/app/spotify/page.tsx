@@ -29,8 +29,10 @@ export default function SpotifyPage() {
       try {
         const res = await getJson<SpotifyPlaylists>("/api/spotify/playlists");
         setData(res);
-      } catch (e: any) {
-        setErr(e?.message ?? "Failed to load playlists");
+      } catch (err: unknown) {
+        const msg =
+          err instanceof Error ? err.message : "Failed to load playlists";
+        setErr(msg);
       } finally {
         setLoading(false);
       }
