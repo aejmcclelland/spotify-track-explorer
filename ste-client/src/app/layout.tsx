@@ -29,10 +29,12 @@ export default function RootLayout({
   return (
     <html data-theme="cupcake" lang="en">
       <body
-        className={`${inter.variable} ${nunito.variable} font-sans subpixel-antialiased`}
+        className={`${inter.variable} ${nunito.variable} font-sans subpixel-antialiased flex flex-col min-h-screen`}
       >
         <Navbar />
-        <main>{children}</main>
+         <main className="flex-1 container mx-auto px-4 py-6">
+          {children}
+        </main>
         <Footer />
         <Toaster position="top-center" reverseOrder={false} />
       </body>

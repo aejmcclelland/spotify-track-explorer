@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 import { getJson } from "@/lib/api";
 import Link from "next/link";
+import { isLoggedIn } from "@/lib/auth";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 type Playlist = {
   id: string;
@@ -23,21 +25,32 @@ export default function SpotifyPage() {
   const [data, setData] = useState<SpotifyPlaylists | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
+    // If there is no token, bounce to home (or '/login') before any fetch.
+    if (!isLoggedIn()) {
+      router.replace('/');
+      return;
+    }
+
     (async () => {
       try {
-        const res = await getJson<SpotifyPlaylists>("/api/spotify/playlists");
+        const res = await getJson<SpotifyPlaylists>('/api/spotify/playlists');
         setData(res);
       } catch (err: unknown) {
-        const msg =
-          err instanceof Error ? err.message : "Failed to load playlists";
+        const msg = err instanceof Error ? err.message : 'Failed to load playlists';
+        // If unauthorized from API, redirect away instead of showing a red 401 bar
+        if (msg.includes('401') || msg.toLowerCase().includes('unauthorized')) {
+          router.replace('/'); // or '/login'
+          return;
+        }
         setErr(msg);
       } finally {
         setLoading(false);
       }
     })();
-  }, []);
+  }, [router]);
 
   if (loading) return <div className="loading loading-spinner loading-md" />;
   if (err) return <div className="alert alert-error">{err}</div>;

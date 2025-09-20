@@ -1,58 +1,72 @@
+// src/components/Navbar.tsx
 "use client";
+
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/lib/useAuth";
 import { clearToken } from "@/lib/auth";
 import { useEffect, useState } from "react";
 
-export default function Navbar() {
-  const router = useRouter();
-  const { authed } = useAuth();
+const NavLink = ({ href, label }: { href: string; label: string }) => {
+  const pathname = usePathname();
+  const isActive =
+    pathname === href || (href !== "/" && pathname?.startsWith(href));
+  return (
+    <Link
+      href={href}
+      className={`btn btn-ghost ${isActive ? "btn-active" : ""}`}
+    >
+      {label}
+    </Link>
+  );
+};
 
+export default function Navbar() {
   const [mounted, setMounted] = useState(false);
-  useEffect(() => setMounted(true), []);
-  if (!mounted) {
-    return (
-      <nav className="navbar bg-base-200">
-        <div className="container mx-auto flex gap-2 p-2" suppressHydrationWarning>
-          <Link className="btn btn-ghost" href="/">Home</Link>
-        </div>
-      </nav>
-    );
-  }
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const { authed } = useAuth();
+  const router = useRouter();
+
+  const onLogout = () => {
+    clearToken(); // drop token & broadcast "ste-auth"
+    router.replace("/login");
+  };
 
   return (
-    <nav className="navbar bg-base-200">
-      <div className="container mx-auto flex gap-2 p-2" suppressHydrationWarning>
-        <Link className="btn btn-ghost" href="/">
-          Home
+    <div className="navbar bg-base-100 border-b">
+      <div className="flex-1">
+        <Link href="/" className="btn btn-ghost text-xl">
+          Track Explorer
         </Link>
-        {authed ? (
+      </div>
+      <div className="flex gap-2">
+        {mounted && authed ? (
+          <NavLink href="/spotify" label="Spotify" />
+        ) : (
+          <NavLink href="/" label="Spotify" />
+        )}
+        {!mounted ? (
           <>
-            <Link className="btn btn-ghost" href="/me">
-              Me
-            </Link>
-            <button
-              className="btn btn-outline"
-              onClick={() => {
-                clearToken();
-                router.replace("/login");
-              }}
-            >
-              Log out
-            </button>
+            <span className="skeleton h-10 w-20" />
+            <span className="skeleton h-10 w-24" />
+          </>
+        ) : !authed ? (
+          <>
+            <NavLink href="/login" label="Login" />
+            <NavLink href="/register" label="Register" />
           </>
         ) : (
           <>
-            <Link className="btn btn-ghost" href="/register">
-              Register
-            </Link>
-            <Link className="btn btn-ghost" href="/login">
-              Login
-            </Link>
+            <button onClick={onLogout} className="btn btn-ghost">
+              Logout
+            </button>
+            <NavLink href="/me" label="Profile" />
           </>
         )}
       </div>
-    </nav>
+    </div>
   );
 }

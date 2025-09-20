@@ -1,23 +1,29 @@
 globalThis.__BUILD_MANIFEST = {
   "pages": {
-    "/_app": []
+    "/_app": [
+      "static/chunks/6b297c6bc770653d.js",
+      "static/chunks/85eeb4bd2a0aeeea.js",
+      "static/chunks/turbopack-0cf1e286db98036e.js"
+    ],
+    "/_error": [
+      "static/chunks/5a6c3db863a354ce.js",
+      "static/chunks/85eeb4bd2a0aeeea.js",
+      "static/chunks/turbopack-6655919e1c87cd90.js"
+    ]
   },
   "devFiles": [],
   "ampDevFiles": [],
   "polyfillFiles": [
-    "static/chunks/c6b16_next_dist_build_polyfills_polyfill-nomodule.js"
+    "static/chunks/a6dad97d9634a72d.js"
   ],
   "lowPriorityFiles": [],
   "rootMainFiles": [
-    "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_97c46533._.js",
-    "static/chunks/c6b16_next_dist_compiled_react-dom_ffcf0ef6._.js",
-    "static/chunks/c6b16_next_dist_compiled_next-devtools_index_ad1936a3.js",
-    "static/chunks/c6b16_next_dist_compiled_730bcc36._.js",
-    "static/chunks/c6b16_next_dist_client_cb5c7112._.js",
-    "static/chunks/c6b16_next_dist_d09e5c9c._.js",
-    "static/chunks/69652_@swc_helpers_cjs_77b72907._.js",
-    "static/chunks/_a0ff3932._.js",
-    "static/chunks/turbopack-_031890a0._.js"
+    "static/chunks/ef1f2aff9cb09d8d.js",
+    "static/chunks/69b4fcdbd33f9add.js",
+    "static/chunks/9ff0436e3c4ca775.js",
+    "static/chunks/afad78759262653c.js",
+    "static/chunks/3f69ea6de5b23902.js",
+    "static/chunks/turbopack-88d14d5e3be8e21a.js"
   ],
   "ampFirstPages": []
 };
