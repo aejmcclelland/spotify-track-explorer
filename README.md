@@ -5,6 +5,17 @@ The app allows users to sign in, link their Spotify account, and explore playlis
 Built to showcase clean OOP design, API integration, and AWS deployment skills.
 
 ---
+## 🚀 Tech Highlights - (some of these features are coming soon!)
+
+- **Spring Boot (Java 17)** – REST API with JWT auth, Spotify account linking, and PostgreSQL persistence.
+- **Next.js 15 + Tailwind/DaisyUI** – modern UI with client/server components, dark mode, and responsive design.
+- **OAuth 2.0 with PKCE** – secure Spotify linking flow, tokens stored/auto-refreshed server-side.
+- **PostgreSQL + Flyway** – relational schema with versioned migrations for users, linked Spotify accounts, playlists, and tracks.
+- **Testing & CI** – unit tests for services, slice tests for API, GitHub Actions pipeline for build + test.
+- **AWS-ready** – designed for Elastic Beanstalk + RDS + Secrets Manager, with CloudWatch monitoring. Can run Next.js on Vercel for cost efficiency.
+- **Cost awareness** – architecture runs comfortably in free/low-tier AWS and Vercel, with Budgets/alerts for guardrails.
+
+--
 
 ##  Project Structure
 
