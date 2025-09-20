@@ -1,7 +1,7 @@
 # Spotify Track Explorer
 
 Full-stack portfolio project demonstrating **Spring Boot (Java)** backend + **Next.js (TypeScript, Tailwind, daisyUI)** frontend.  
-The app allows users to sign in, link their Spotify account, and explore playlists, tracks, and audio features.  
+The app allows users to sign in, link their Spotify account, and explore playlists & tracks.  
 Built to showcase clean OOP design, API integration, and AWS deployment skills.
 
 ---
