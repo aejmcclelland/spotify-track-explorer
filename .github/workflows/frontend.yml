@@ -13,6 +13,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      CI: true
+      NEXT_TELEMETRY_DISABLED: 1
+      NODE_OPTIONS: "--max_old_space_size=4096"
     steps:
       - uses: actions/checkout@v4
 
@@ -28,15 +32,34 @@ jobs:
           cache: "pnpm"
           cache-dependency-path: ste-client/pnpm-lock.yaml
 
+      - name: Prepare env (CI-safe defaults)
+        working-directory: ste-client
+        run: |
+          # Provide safe defaults so Next can build during CI without secrets
+          # Override these with repo/Org secrets if needed
+          {
+            echo "NEXT_PUBLIC_API_BASE=${NEXT_PUBLIC_API_BASE:-http://localhost:8080}";
+            echo "NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-http://localhost:3000}";
+          } > .env
+
       - name: Install deps
         working-directory: ste-client
         run: pnpm install --frozen-lockfile=false
 
-      - name: Lint & Build
+      - name: Build (Next.js)
         working-directory: ste-client
-        run: |
-          pnpm lint || true   # keep optional for now
-          pnpm build
+        run: pnpm build
+
+      - name: Upload build output (for debugging)
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ste-client-next-output
+          path: |
+            ste-client/.next
+            ste-client/next.config.*
+            ste-client/package.json
+            ste-client/pnpm-lock.yaml
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
