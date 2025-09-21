@@ -8,8 +8,8 @@ import LoadingState from "@/components/LoadingState";
 import ErrorState from "@/components/ErrorState";
 import ConnectSpotifyCard from "@/components/ConnectSpotifyCard";
 import EmptyState from "@/components/EmptyState";
-import { getToken } from '@/lib/auth';
-import { PlaylistsResponse } from "@/types/Spotify";
+import { getToken } from "@/lib/auth";
+import { PlaylistsResponse } from "@/types/spotify";
 
 export default function SpotifyPage() {
   const [data, setData] = useState<PlaylistsResponse | null>(null);
@@ -29,18 +29,20 @@ export default function SpotifyPage() {
     (async () => {
       try {
         const token = getToken();
-        const res = await fetch('/api/spotify/playlists', {
+        const res = await fetch("/api/spotify/playlists", {
           headers: token ? { Authorization: `Bearer ${token}` } : undefined,
-          credentials: 'include',
+          credentials: "include",
         });
 
         // Handle auth + link states by status code only
-        if (res.status === 409) { // not linked -> send to profile to link
-          router.replace('/me');
+        if (res.status === 409) {
+          // not linked -> send to profile to link
+          router.replace("/me");
           return;
         }
-        if (res.status === 401) { // unauthorized → send home/login
-          router.replace('/');
+        if (res.status === 401) {
+          // unauthorized → send home/login
+          router.replace("/");
           return;
         }
         if (!res.ok) {
@@ -63,9 +65,10 @@ export default function SpotifyPage() {
         setData(json);
         return;
       } catch (err: unknown) {
-        const msg = err instanceof Error ? err.message : 'Failed to load playlists';
+        const msg =
+          err instanceof Error ? err.message : "Failed to load playlists";
         // Do not redirect on guessed errors; surface the message instead
-        if (msg.includes('SPOTIFY_NOT_LINKED')) {
+        if (msg.includes("SPOTIFY_NOT_LINKED")) {
           setNotLinked(true);
         } else {
           setErr(msg);
