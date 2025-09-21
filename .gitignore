@@ -88,3 +88,5 @@ ste-server/src/main/resources/application-secrets.yaml
 *.p12
 *.crt
 ste-server/keys/
+
+resources/application-secrets.yaml
