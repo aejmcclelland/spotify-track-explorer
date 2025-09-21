@@ -5,6 +5,10 @@ import com.amcclelland.ste_server.infra.SpotifyAccountRepository;
 import com.amcclelland.ste_server.infra.SpotifyClient;
 import com.amcclelland.ste_server.infra.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 import java.util.Map;
 
@@ -29,8 +33,10 @@ public class SpotifyService {
      * Refreshes using the stored refresh_token and updates expiry if present.
      */
     public String getFreshAccessTokenForEmail(String email) {
-        var user = users.findByEmail(email).orElseThrow(() -> new RuntimeException("user not found"));
-        var acct = accounts.findByUserId(user.getId()).orElseThrow(() -> new RuntimeException("not linked"));
+        var user = users.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(NOT_FOUND, "USER_NOT_FOUND"));
+        var acct = accounts.findByUserId(user.getId())
+                .orElseThrow(() -> new ResponseStatusException(CONFLICT, "SPOTIFY_NOT_LINKED"));
 
         // Always refresh
         return refreshAndPersist(acct);
@@ -39,11 +45,11 @@ public class SpotifyService {
     private String refreshAndPersist(SpotifyAccount acct) {
         Map<String, Object> resp = spotifyClient.refreshAccessToken(acct.getRefreshToken());
         if (resp == null || resp.get("access_token") == null) {
-            throw new RuntimeException("token_refresh_failed");
+            // Token revoked/expired/invalid → treat as not linked or unauthorized
+            throw new ResponseStatusException(UNAUTHORIZED, "SPOTIFY_TOKEN_INVALID");
+            // or: new ResponseStatusException(CONFLICT, "SPOTIFY_NOT_LINKED");
         }
-        String accessToken = (String) resp.get("access_token");
-
-        return accessToken;
+        return (String) resp.get("access_token");
     }
 
     public String getValidAccessTokenForUser(Long userId) {

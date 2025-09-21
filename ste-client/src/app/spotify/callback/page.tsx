@@ -24,7 +24,7 @@ function CallbackClient() {
     const state = sp.get("state");
 
     if (!code) {
-      setMsg("Missing code in callback URL.");
+      setError("Missing code in callback URL.");
       return;
     }
 
@@ -33,9 +33,11 @@ function CallbackClient() {
         const res = await postJson<SpotifyExchangeResponse>("/api/spotify/exchange", { code, state });
         if (res.linked) {
           setMsg("Spotify linked! Redirecting…");
-          router.replace("/me");
+          router.replace("/spotify?linked=1"); // land on playlists page and show success toast
+        } else if ((res as any)?.error) {
+          setError((res as any).error);
         } else {
-          setMsg("Unexpected response linking Spotify.");
+          setError("Unexpected response linking Spotify.");
         }
       } catch (err: unknown) {
         const message = err instanceof Error ? err.message : "Failed to link Spotify";

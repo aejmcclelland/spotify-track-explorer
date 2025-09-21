@@ -15,6 +15,11 @@ spring:
     baseline-on-migrate: true
   config:
     import: optional:application-secrets.yaml
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          public-key-location: classpath:jwt/public.pem
 
 spotify:
   client-id: ${SPOTIFY_CLIENT_ID}

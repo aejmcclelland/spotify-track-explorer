@@ -43,11 +43,7 @@ export default function Navbar() {
         </Link>
       </div>
       <div className="flex gap-2">
-        {mounted && authed ? (
-          <NavLink href="/spotify" label="Spotify" />
-        ) : (
-          <NavLink href="/" label="Spotify" />
-        )}
+        <NavLink href="/spotify" label="Spotify" />
         {!mounted ? (
           <>
             <span className="skeleton h-10 w-20" />

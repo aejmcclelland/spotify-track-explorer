@@ -1,4 +1,5 @@
 /Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/SteServerApplication.java
+/Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/application/DebugController.java
 /Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/application/DefaultUserService.java
 /Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/application/SpotifyService.java
 /Users/andrewmcclelland/Documents/spotify-track-explorer/ste-server/src/main/java/com/amcclelland/ste_server/application/UserService.java

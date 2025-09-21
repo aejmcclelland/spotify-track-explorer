@@ -37,6 +37,11 @@ replay_pid*
 !mvnw.cmd
 !.mvn/wrapper/maven-wrapper.jar
 !.mvn/wrapper/maven-wrapper.properties
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
 
 # Optional: Gradle (if any sample sneaks in)
 .gradle/

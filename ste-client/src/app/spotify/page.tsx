@@ -1,61 +1,89 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getJson } from "@/lib/api";
 import Link from "next/link";
-import { isLoggedIn } from "@/lib/auth";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
-type Playlist = {
-  id: string;
-  name: string;
-  owner?: string; // trimmed by backend
-  tracks?: number; // trimmed total
-  imageUrl?: string; // trimmed first image url
-  externalUrl?: string; // trimmed external spotify url
-};
-type SpotifyPlaylists = {
-  items: Playlist[];
-  nextOffset?: number | null;
-  hasMore: boolean;
-};
+import LoadingState from "@/components/LoadingState";
+import ErrorState from "@/components/ErrorState";
+import ConnectSpotifyCard from "@/components/ConnectSpotifyCard";
+import EmptyState from "@/components/EmptyState";
+import { getToken } from '@/lib/auth';
+import { PlaylistsResponse } from "@/types/Spotify";
 
 export default function SpotifyPage() {
-  const [data, setData] = useState<SpotifyPlaylists | null>(null);
+  const [data, setData] = useState<PlaylistsResponse | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
+  const [notLinked, setNotLinked] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    // If there is no token, bounce to home (or '/login') before any fetch.
-    if (!isLoggedIn()) {
-      router.replace('/');
-      return;
-    }
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
 
     (async () => {
       try {
-        const res = await getJson<SpotifyPlaylists>('/api/spotify/playlists');
-        setData(res);
-      } catch (err: unknown) {
-        const msg = err instanceof Error ? err.message : 'Failed to load playlists';
-        // If unauthorized from API, redirect away instead of showing a red 401 bar
-        if (msg.includes('401') || msg.toLowerCase().includes('unauthorized')) {
-          router.replace('/'); // or '/login'
+        const token = getToken();
+        const res = await fetch('/api/spotify/playlists', {
+          headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+          credentials: 'include',
+        });
+
+        // Handle auth + link states by status code only
+        if (res.status === 409) { // not linked -> send to profile to link
+          router.replace('/me');
           return;
         }
-        setErr(msg);
+        if (res.status === 401) { // unauthorized → send home/login
+          router.replace('/');
+          return;
+        }
+        if (!res.ok) {
+          // Expect JSON from our proxy even on errors
+          let payload: any = null;
+          try {
+            payload = await res.json();
+          } catch {
+            /* ignore */
+          }
+          const msg =
+            payload?.message ||
+            payload?.error ||
+            `Failed to load playlists (${res.status})`;
+          throw new Error(msg);
+        }
+
+        // Parse the trimmed DTO our server returns
+        const json = (await res.json()) as PlaylistsResponse;
+        setData(json);
+        return;
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : 'Failed to load playlists';
+        // Do not redirect on guessed errors; surface the message instead
+        if (msg.includes('SPOTIFY_NOT_LINKED')) {
+          setNotLinked(true);
+        } else {
+          setErr(msg);
+        }
       } finally {
         setLoading(false);
       }
     })();
-  }, [router]);
+  }, [mounted, router]);
 
-  if (loading) return <div className="loading loading-spinner loading-md" />;
-  if (err) return <div className="alert alert-error">{err}</div>;
-  if (!data || !data.items?.length)
-    return <div className="alert">No playlists found.</div>;
+  if (!mounted) return <LoadingState label="Checking your session…" />;
+  if (loading) return <LoadingState label="Loading your Spotify data…" />;
+  if (notLinked) return <ConnectSpotifyCard />;
+  if (err) return <ErrorState message={err} />;
+  if (data && Array.isArray(data.items) && data.items.length === 0) {
+    return <EmptyState message="No playlists found yet." />;
+  }
+  if (!data) return <LoadingState label="Preparing your playlists…" />;
 
   return (
     <div className="p-4">
