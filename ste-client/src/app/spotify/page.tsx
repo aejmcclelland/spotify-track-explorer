@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -12,6 +12,14 @@ import { getToken } from "@/lib/auth";
 import { PlaylistsResponse } from "@/types/spotify";
 
 export default function SpotifyPage() {
+  return (
+    <Suspense fallback={<LoadingState label="Loading your Spotify data…" />}>
+      <SpotifyPageClient />
+    </Suspense>
+  );
+}
+
+function SpotifyPageClient() {
   const [data, setData] = useState<PlaylistsResponse | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -58,15 +66,19 @@ export default function SpotifyPage() {
         }
         if (!res.ok) {
           // Expect JSON from our proxy even on errors
-          let payload: any = null;
+          let payload: unknown = null;
           try {
             payload = await res.json();
           } catch {
             /* ignore */
           }
+          const pe =
+            payload && typeof payload === "object"
+              ? (payload as { message?: string; error?: string })
+              : null;
           const msg =
-            payload?.message ||
-            payload?.error ||
+            pe?.message ??
+            pe?.error ??
             `Failed to load playlists (${res.status})`;
           throw new Error(msg);
         }

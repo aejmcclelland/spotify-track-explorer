@@ -64,6 +64,7 @@ Thumbs.db
 # ── Env files ─────────────────────────────────────────────────────────────────
 .env*
 !.env.example
+.env
 
 # ── Coverage ──────────────────────────────────────────────────────────────────
 coverage/
@@ -80,3 +81,10 @@ docker-data/
 
 # -- hide spotify secrets yaml
 ste-server/src/main/resources/application-secrets.yaml
+
+# keys & secrets
+*.pem
+*.key
+*.p12
+*.crt
+ste-server/keys/

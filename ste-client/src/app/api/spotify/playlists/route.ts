@@ -51,8 +51,8 @@ export async function GET(req: NextRequest) {
     }
 
     return toJsonResponse(res);
-  } catch (e: any) {
-    const message = e?.message || "Upstream unreachable";
+  } catch (e: unknown) {
+    const message = e instanceof Error ? e.message : "Upstream request failed";
     return new Response(
       JSON.stringify({ code: "UPSTREAM_UNREACHABLE", message }),
       { status: 502, headers: { "content-type": "application/json" } }
