@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import LoadingState from "@/components/LoadingState";
 import ErrorState from "@/components/ErrorState";
 import ConnectSpotifyCard from "@/components/ConnectSpotifyCard";
@@ -18,10 +18,21 @@ export default function SpotifyPage() {
   const [mounted, setMounted] = useState(false);
   const [notLinked, setNotLinked] = useState(false);
   const router = useRouter();
+  const sp = useSearchParams();
+  const [linkedMsg, setLinkedMsg] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    if (sp.get("linked") === "1") {
+      setLinkedMsg("Spotify linked successfully 🎉");
+      // Clean the URL so refreshes don't keep showing the toast
+      router.replace("/spotify");
+    }
+  }, [mounted, sp, router]);
 
   useEffect(() => {
     if (!mounted) return;
@@ -91,6 +102,11 @@ export default function SpotifyPage() {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Your Spotify Playlists</h1>
+      {linkedMsg && (
+        <div role="alert" className="alert alert-success mb-4">
+          <span>{linkedMsg}</span>
+        </div>
+      )}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {data.items.map((p) => {
           const img = p.imageUrl;
